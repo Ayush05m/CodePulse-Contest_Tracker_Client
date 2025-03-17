@@ -142,19 +142,14 @@ const HomePage = () => {
             ))}
           </div>
         ) : contestsData && contestsData.data.length > 0 ? (
-          <div className="flex gap-6 mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto max-w-6xl">
             {contestsData.data.map((contest) => (
-              <div className="w-[500px]">
-                <ContestCard key={contest.contestId} contest={contest} />
-              </div>
+              <ContestCard key={contest.contestId} contest={contest} />
             ))}
           </div>
         ) : (
           <div className="text-center py-8">
             <p className="text-muted-foreground">No upcoming contests found.</p>
-            <Button variant="outline" className="mt-4" asChild>
-              <Link to="/contests">View All Contests</Link>
-            </Button>
           </div>
         )}
 

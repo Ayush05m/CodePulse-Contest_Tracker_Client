@@ -154,14 +154,23 @@ const ContestCard = ({ contest }: ContestCardProps) => {
             </div>
           </div>
         </CardHeader>
-        <CardContent className="flex-grow space-y-2">
-          <div className="text-sm">
-            <span className="font-medium">Start:</span>{" "}
-            {new Date(contest.startTime).toLocaleString()}
-          </div>
-          <div className="text-sm">
-            <span className="font-medium">Duration:</span>{" "}
-            {formatDuration(contest.duration)}
+        <CardContent
+          // className={
+          //   "flex-grow space-y-2 flex flex-col overflow-hidden justify-end"
+          // }
+          className={`flex-grow space-y-2 flex flex-col ${
+            contest.status === "past" ? "justify-between" : "justify-end"
+          }`}
+        >
+          <div className="">
+            <div className="text-sm">
+              <span className="font-medium">Start:</span>{" "}
+              {new Date(contest.startTime).toLocaleString()}
+            </div>
+            <div className="text-sm">
+              <span className="font-medium">Duration:</span>{" "}
+              {formatDuration(contest.duration)}
+            </div>
           </div>
           {contest.status === "upcoming" ? (
             <div className="mt-4">
@@ -192,7 +201,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
             </div>
           ) : (
             <div className="flex text-2xl text-red-400 justify-center items-center">
-              Contest Over
+              Contest has ended
             </div>
           )}
         </CardContent>
