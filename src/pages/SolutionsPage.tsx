@@ -1,6 +1,6 @@
 import type React from "react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -46,7 +46,9 @@ const SolutionsPage = () => {
   });
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["solutions", filters, page],
     queryFn: () =>

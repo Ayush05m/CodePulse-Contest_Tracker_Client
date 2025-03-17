@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -70,6 +70,9 @@ const BookmarksPage = () => {
     const query = searchQuery.toLowerCase();
     return contestName?.includes(query) || contestPlatform?.includes(query);
   });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleEditClick = (bookmark: BookmarkItem) => {
     setSelectedBookmark(bookmark);

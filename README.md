@@ -1,162 +1,162 @@
-# 🌟 Project Name 🌟
+# Contest Tracker Fullstack Documentation
 
-Welcome to **Project Name**! This is a brief and engaging description of your project. Whether it's a tool, library, app, or something else, let users know what it does and why it's awesome.
+## Overview
+The **Contest Tracker** is a full-stack web application built with **TypeScript, Node.js, Express.js (backend), and React.js (frontend)**. It tracks programming contests across multiple platforms and allows users to bookmark contests, attach solutions, and retrieve contest details.
 
----
-
-## 🚀 Features
-
-- **Feature 1**: A brief description of what this feature does.
-- **Feature 2**: Another cool feature that users will love.
-- **Feature 3**: Highlight a unique aspect of your project.
-- **Feature 4**: Mention any integrations or compatibility with other tools.
-
----
-
-## 📊 Visual Overview
-
-### Features Table
-
-| Feature           | Description                                |
-|-------------------|--------------------------------------------|
-| **Feature 1**     | A brief description of what this feature does. |
-| **Feature 2**     | Another cool feature that users will love. |
-| **Feature 3**     | Highlight a unique aspect of your project. |
-| **Feature 4**     | Mention any integrations or compatibility. |
-
-### Usage Flow Chart
-
-```mermaid
-graph TD;
-    A[Start] --> B[Clone Repository];
-    B --> C[Install Dependencies];
-    C --> D[Run the Project];
-    D --> E[Enjoy Using Project Name];
-```
+## Features
+- User authentication with JWT.
+- Fetching programming contest details from **Codeforces, CodeChef, LeetCode**.
+- Bookmarking contests for easy access.
+- Attaching solution links to past contests.
+- Fetching YouTube videos related to contests.
+- Caching services for optimized performance.
 
 ---
 
-## 📦 Installation
+## Frontend Setup
 
-Getting started with **Project Name** is super easy! Follow these steps:
+### Prerequisites
+Ensure you have the following installed:
+- **Node.js** (v16 or later)
+- **React.js** with Vite
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/your-username/project-name.git
+### Steps to Install (Frontend)
+1. Navigate to the frontend directory:
+   ```sh
+   cd frontend
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Start the development server:
+   ```sh
+   npm run dev
    ```
 
-2. **Navigate to the project directory**:
-   ```bash
-   cd project-name
-   ```
+### Pages & Routes
+The frontend is built with **React + React Router** and uses **TanStack React Query** for data fetching.
 
-3. **Install dependencies**:
-   ```bash
-   npm install  # or yarn install, pip install, etc.
-   ```
+| Route            | Component            | Description |
+|-----------------|---------------------|-------------|
+| `/`             | HomePage            | Landing page |
+| `/contests`     | ContestsPage        | List of contests |
+| `/bookmarks`    | BookmarksPage       | User's bookmarked contests |
+| `/solutions`    | SolutionsPage       | Solutions linked to contests |
+| `/login`        | LoginPage           | User login form |
+| `/register`     | RegisterPage        | User registration form |
+| `*`             | NotFoundPage        | 404 Not Found |
 
-4. **Run the project**:
-   ```bash
-   npm start  # or yarn start, python main.py, etc.
-   ```
+### State Management
+- Uses **TanStack Query (React Query)** for API calls.
+- Uses **React Router** for navigation.
+- Uses **ThemeProvider** for light/dark mode toggle.
+- Uses **Redux** for bookmarks and notes handles.
 
 ---
 
-## 🛠️ Usage
 
-Here’s how you can use **Project Name**:
+## API Endpoints
 
-1. **Step 1**: Describe the first step to use your project.
-2. **Step 2**: Provide a code snippet or example.
-   ```javascript
-   const project = require('project-name');
-   project.doSomethingAwesome();
-   ```
-3. **Step 3**: Explain any additional steps or configurations.
+### Authentication (current not connected)
+#### Register User
+- **Endpoint:** `POST /api/auth/register`
+- **Description:** Registers a new user.
+- **Request Body:**
+  ```json
+  {
+    "username": "user123",
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "message": "User registered successfully"
+  }
+  ```
+
+#### Login User
+- **Endpoint:** `POST /api/auth/login`
+- **Description:** Logs in an existing user and returns a JWT token.
+- **Request Body:**
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "token": "your_jwt_token"
+  }
+  ```
+
+### Contests
+#### Get All Contests
+- **Endpoint:** `GET /api/contests`
+- **Description:** Fetches upcoming and past contests from multiple platforms.
+
+#### Get Contest by ID
+- **Endpoint:** `GET /api/contests/:id`
+- **Description:** Fetches details of a specific contest.
+
+### Bookmarks (Currently only with redux and localstorage)
+#### Add Bookmark (bookmark api, future implementation)
+- **Endpoint:** `POST /api/bookmarks`
+- **Description:** Adds a contest to the user's bookmarks.
+- **Request Body:**
+  ```json
+  {
+    "contestId": "12345"
+  }
+  ```
+
+#### Get Bookmarks
+- **Endpoint:** `GET /api/bookmarks`
+- **Description:** Fetches all bookmarked contests for the user.
+
+### Solutions
+#### Add Contest Solution
+- **Endpoint:** `POST /api/solutions`
+- **Description:** Allows users to add a solution link for a contest.
+- **Request Body:**
+  ```json
+  {
+    "contestId": "12345",
+    "solutionUrl": "https://youtube.com/solution"
+  }
+  ```
+
+#### Get Solutions for a Contest
+- **Endpoint:** `GET /api/solutions/:contestId`
+- **Description:** Fetches all solutions for a specific contest.
 
 ---
 
-## 🔄 Retry After Cloning
+## Caching Services
+- The backend implements caching using **Redis (or an alternative in-memory solution)** to improve performance for frequently accessed contest data.
 
-If you encounter issues after cloning the repository, follow these steps to troubleshoot:
+## Deployment
+- To deploy, use a cloud service like **AWS, DigitalOcean, or Vercel**.
+- Set up a production database and update the `.env` file accordingly.
+- Run the production build:
+  ```sh
+  npm run build
+  npm start
+  ```
 
-1. **Ensure Dependencies Are Installed**: Make sure all dependencies are installed correctly. Run:
-   ```bash
-   npm install  # or yarn install, pip install, etc.
-   ```
-
-2. **Check for Missing Files**: Verify that all required files are present in the repository. If any files are missing, re-clone the repository:
-   ```bash
-   git clone https://github.com/your-username/project-name.git
-   ```
-
-3. **Check Environment Variables**: If your project requires environment variables, ensure they are set up correctly. Create a `.env` file if necessary:
-   ```bash
-   cp .env.example .env
-   ```
-
-4. **Run the Project**: After resolving the issues, try running the project again:
-   ```bash
-   npm start  # or yarn start, python main.py, etc.
-   ```
-
-5. **Check Logs**: If the project still doesn’t work, check the logs for any error messages and address them accordingly.
-
----
-
-<!-- ## 📄 Documentation
-
-For more detailed information, check out the documentation.
-
---- -->
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Here’s how you can help:
-
+## Contributing
 1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature/YourFeatureName
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m 'Add some feature'
-   ```
-4. Push to the branch:
-   ```bash
-   git push origin feature/YourFeatureName
-   ```
+2. Create a new branch: `git checkout -b feature-branch`
+3. Commit your changes: `git commit -m 'Add new feature'`
+4. Push to the branch: `git push origin feature-branch`
 5. Open a pull request.
 
-Please read our `CONTRIBUTING.md` for more details.
+## License
+This project is licensed under the **MIT License**.
 
 ---
-
-## 📜 License
-
-This project is licensed under the MIT License - see the `LICENSE` file for details.
-
----
-
-## 🙏 Acknowledgments
-
-- **Inspiration**: Mention any projects or people that inspired you.
-- **Libraries**: List any third-party libraries or tools you used.
-- **Contributors**: Shout out to your contributors!
-
----
-
-## 📧 Contact
-
-Have questions or want to get in touch? Feel free to reach out:
-
-- **Email**: your-email@example.com
-- **Twitter**: [@yourhandle](https://twitter.com/yourhandle)
-- **GitHub**: [your-username](https://github.com/your-username)
-
----
-
-## 🌈 Thank You!
-
-Thank you for checking out **Madhavansh Ayurveda**! We hope you find it useful and enjoy using it as much as we enjoyed building it. Happy coding! 🎉
+For further assistance, feel free to reach out or create an issue in the repository.

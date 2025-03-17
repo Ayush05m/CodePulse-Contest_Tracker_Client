@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -23,7 +23,9 @@ const ContestsPage = () => {
     status: "",
   });
   const [page, setPage] = useState(1);
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["contests", activeTab, filters, page],
     queryFn: () =>
