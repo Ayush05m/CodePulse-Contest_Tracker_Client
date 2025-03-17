@@ -1,7 +1,7 @@
 import axios from "axios"
 import type { Contest } from "@/types/contest"
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api"
+const API_URL = import.meta.env.VITE_API_URL
 
 interface ContestResponse {
   success: boolean
@@ -23,7 +23,6 @@ interface ContestParams {
 
 export const fetchContests = async (params: ContestParams = {}): Promise<ContestResponse> => {
   try {
-    console.log(API_URL)
     const response = await axios.get(`${API_URL}/contests`, { params })
     return response.data
   } catch (error: any) {
