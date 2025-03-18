@@ -5,6 +5,7 @@ import {
 } from "@reduxjs/toolkit";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "sonner";
 
 type User = {
   id: string;
@@ -102,6 +103,7 @@ export const login = createAsyncThunk(
         user: { id: decoded.id, name: decoded.name, email: decoded.email },
       };
     } catch (error) {
+      toast.error("Login failed. Please try again.");
       return rejectWithValue("Login failed. Please try again.");
     }
   }

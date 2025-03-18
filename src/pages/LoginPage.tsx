@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/card";
 import { useAppDispatch, useAppSelector } from "@/hooks/userReduxStore";
 import { login } from "@/store/slice/authSlice";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -39,9 +40,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   // const [error, setError] = useState<string | null>(null);
   const dispatch = useAppDispatch();
-  const { loading, error, isAuthenticated } = useAppSelector(
-    (state) => state.auth
-  );
+  const { loading, isAuthenticated } = useAppSelector((state) => state.auth);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -53,6 +52,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      toast.success("Login Successful");
       navigate("/contests");
     }
   }, [isAuthenticated, navigate]);
@@ -90,15 +90,6 @@ const LoginPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                className="bg-destructive/15 text-destructive p-3 rounded-md mb-4 text-sm"
-              >
-                {error}
-              </motion.div>
-            )}
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
