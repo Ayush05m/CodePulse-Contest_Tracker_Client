@@ -37,6 +37,7 @@ const ContestsPage = () => {
         search: filters.search,
         page,
         limit: 12,
+        sort: filters.sort,
       }),
     placeholderData: (previousData) => previousData,
   });
