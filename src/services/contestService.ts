@@ -1,88 +1,96 @@
-import axios from "axios"
-import type { Contest } from "@/types/contest"
+import axios from "axios";
+import type { Contest } from "@/types/contest";
 
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 interface ContestResponse {
-  success: boolean
-  data: Contest[]
-  count: number
+  success: boolean;
+  data: Contest[];
+  count: number;
   pagination: {
-    next?: { page: number; limit: number }
-    prev?: { page: number; limit: number }
-  }
+    next?: { page: number; limit: number };
+    prev?: { page: number; limit: number };
+  };
 }
 
 interface ContestParams {
-  platform?: string
-  status?: string
-  search?: string
-  page?: number
-  limit?: number
+  platform?: string[];
+  status?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
 }
 
-export const fetchContests = async (params: ContestParams = {}): Promise<ContestResponse> => {
+export const fetchContests = async (
+  params: ContestParams = {}
+): Promise<ContestResponse> => {
   try {
-    const response = await axios.get(`${API_URL}/contests`, { params })
-    return response.data
+    const response = await axios.get(`${API_URL}/contests`, { params });
+    return response.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Failed to fetch contests")
+    throw new Error(error.response?.data?.error || "Failed to fetch contests");
   }
-}
+};
 
 export const fetchContest = async (id: string): Promise<Contest> => {
   try {
-    const response = await axios.get(`${API_URL}/contests/${id}`)
-    return response.data.data
+    const response = await axios.get(`${API_URL}/contests/${id}`);
+    return response.data.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Failed to fetch contest")
+    throw new Error(error.response?.data?.error || "Failed to fetch contest");
   }
-}
+};
 
-export const createContest = async (contestData: Partial<Contest>): Promise<Contest> => {
+export const createContest = async (
+  contestData: Partial<Contest>
+): Promise<Contest> => {
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const response = await axios.post(`${API_URL}/contests`, contestData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
-    return response.data.data
+    });
+    return response.data.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Failed to create contest")
+    throw new Error(error.response?.data?.error || "Failed to create contest");
   }
-}
+};
 
-export const updateContest = async (id: string, contestData: Partial<Contest>): Promise<Contest> => {
+export const updateContest = async (
+  id: string,
+  contestData: Partial<Contest>
+): Promise<Contest> => {
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     const response = await axios.put(`${API_URL}/contests/${id}`, contestData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
-    return response.data.data
+    });
+    return response.data.data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Failed to update contest")
+    throw new Error(error.response?.data?.error || "Failed to update contest");
   }
-}
+};
 
 export const deleteContest = async (id: string): Promise<void> => {
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     await axios.delete(`${API_URL}/contests/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Failed to delete contest")
+    throw new Error(error.response?.data?.error || "Failed to delete contest");
   }
-}
+};
 
 export const refreshContestData = async (): Promise<void> => {
   try {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     await axios.post(
       `${API_URL}/contests/refresh`,
       {},
@@ -90,10 +98,11 @@ export const refreshContestData = async (): Promise<void> => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      },
-    )
+      }
+    );
   } catch (error: any) {
-    throw new Error(error.response?.data?.error || "Failed to refresh contest data")
+    throw new Error(
+      error.response?.data?.error || "Failed to refresh contest data"
+    );
   }
-}
-
+};

@@ -11,16 +11,18 @@ import { fetchContests } from "@/services/contestService";
 
 interface FilterState {
   search: string;
-  platform: string;
+  platforms: string[];
   status: string;
+  sort: string;
 }
 
 const ContestsPage = () => {
   const [activeTab, setActiveTab] = useState("upcoming");
   const [filters, setFilters] = useState<FilterState>({
     search: "",
-    platform: "",
+    platforms: [],
     status: "",
+    sort: "",
   });
   const [page, setPage] = useState(1);
   useEffect(() => {
@@ -31,7 +33,7 @@ const ContestsPage = () => {
     queryFn: () =>
       fetchContests({
         status: activeTab !== "all" ? activeTab : "",
-        platform: filters.platform !== "all" ? filters.platform : "",
+        platform: filters.platforms,
         search: filters.search,
         page,
         limit: 12,
@@ -106,7 +108,7 @@ const ContestsPage = () => {
               <p className="text-xl text-muted-foreground">
                 No contests found.
               </p>
-              {(filters.search || filters.platform || filters.status) && (
+              {(filters.search || filters.platforms || filters.status) && (
                 <p className="mt-2 text-muted-foreground">
                   Try adjusting your filters.
                 </p>
@@ -116,7 +118,7 @@ const ContestsPage = () => {
             <>
               <AnimatePresence mode="wait">
                 <motion.div
-                  key={activeTab + filters.platform + filters.status + page}
+                  key={activeTab + filters.platforms + filters.status + page}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}

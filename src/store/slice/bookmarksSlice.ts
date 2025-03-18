@@ -8,7 +8,7 @@ export const getContestStatus = (
 ): "upcoming" | "ongoing" | "past" => {
   const now = new Date().getTime();
   const start = new Date(startTime).getTime();
-  const end = start + duration * 60 * 1000; // Convert minutes to milliseconds
+  const end = start + duration * 1000; // Convert minutes to milliseconds
 
   if (now < start) {
     return "upcoming";

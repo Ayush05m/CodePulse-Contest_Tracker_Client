@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAppDispatch, useAppSelector } from "@/hooks/userReduxStore";
+import { login } from "@/store/slice/authSlice";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -35,8 +37,11 @@ type FormValues = z.infer<typeof formSchema>;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { loading, error, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -46,21 +51,24 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit = async (values: FormValues) => {
-    setIsLoading(true);
-    setError(null);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/contests");
+    }
+  }, [isAuthenticated, navigate]);
 
+  const onSubmit = async (values: FormValues) => {
     try {
       values;
       // await login(values.email, values.password)
+      await dispatch(login(values)).unwrap();
+
       navigate("/contests");
     } catch (err: any) {
-      setError(
-        err.response?.data?.error ||
-          "Failed to login. Please check your credentials."
-      );
-    } finally {
-      setIsLoading(false);
+      // setError(
+      //   err.response?.data?.error ||
+      //     "Failed to login. Please check your credentials."
+      // );
     }
   };
 
@@ -129,8 +137,8 @@ const LoginPage = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Logging in...

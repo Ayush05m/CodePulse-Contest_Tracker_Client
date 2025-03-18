@@ -60,10 +60,10 @@ const BookmarksPage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  // const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   const dispatch = useAppDispatch();
   const bookmarks = useAppSelector((state) => state.bookmarks.items);
-
   const filteredBookmarks = bookmarks.filter((bookmark) => {
     const contestName = bookmark.contest.name?.toLowerCase();
     const contestPlatform = bookmark.contest.platform?.toLowerCase();
@@ -72,6 +72,7 @@ const BookmarksPage = () => {
   });
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(filteredBookmarks);
   }, []);
 
   const handleEditClick = (bookmark: BookmarkItem) => {
@@ -257,34 +258,62 @@ const BookmarksPage = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  <CardContent className="flex-grow space-y-2">
-                    <div className="text-sm">
-                      <span className="font-medium">Start:</span>{" "}
-                      {new Date(bookmark.contest.startTime).toLocaleString()}
-                    </div>
-                    <div className="text-sm">
-                      <span className="font-medium">Duration:</span>{" "}
-                      {formatDuration(bookmark.contest.duration)}
-                    </div>
-
-                    {bookmark.notes && (
-                      <div className="mt-2 p-2 bg-muted rounded-md">
-                        <p className="text-sm font-medium mb-1">Notes:</p>
-                        <p className="text-sm text-muted-foreground">
-                          {bookmark.notes}
-                        </p>
+                  <CardContent
+                    // className={
+                    //   "flex-grow space-y-2 flex flex-col overflow-hidden justify-end"
+                    // }
+                    className={`flex-grow space-y-2 flex flex-col ${
+                      bookmark.contest.status === "past"
+                        ? "justify-between"
+                        : "justify-end"
+                    }`}
+                  >
+                    <div className="">
+                      <div className="text-sm">
+                        <span className="font-medium">Start:</span>{" "}
+                        {new Date(bookmark.contest.startTime).toLocaleString()}
                       </div>
-                    )}
-
+                      <div className="text-sm">
+                        <span className="font-medium">Duration:</span>{" "}
+                        {formatDuration(bookmark.contest.duration)}
+                      </div>
+                    </div>
                     {bookmark.contest.status === "upcoming" ? (
-                      <div className="mt-2 w-[80%] mx-auto">
+                      <div className="mt-4">
                         <CountdownTimer
                           targetDate={new Date(bookmark.contest.startTime)}
                         />
                       </div>
+                    ) : bookmark.contest.status === "ongoing" ? (
+                      <div className="mt-4">
+                        <div className="flex flex-col items-center">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="relative flex h-3 w-3">
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+                            </span>
+                            <span className="text-green-500 font-medium">
+                              LIVE NOW
+                            </span>
+                          </div>
+                          <div className="w-full">
+                            <CountdownTimer
+                              targetDate={
+                                new Date(
+                                  new Date(
+                                    bookmark.contest.startTime
+                                  ).getTime() +
+                                    bookmark.contest.duration * 60000
+                                )
+                              }
+                              label="Ends in"
+                            />
+                          </div>
+                        </div>
+                      </div>
                     ) : (
                       <div className="flex text-2xl text-red-400 justify-center items-center">
-                        Contest Over
+                        Contest has ended
                       </div>
                     )}
                   </CardContent>

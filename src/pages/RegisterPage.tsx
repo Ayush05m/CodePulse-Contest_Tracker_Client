@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
@@ -23,6 +23,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { register } from "@/store/slice/authSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/userReduxStore";
 
 const formSchema = z
   .object({
@@ -42,9 +44,10 @@ type FormValues = z.infer<typeof formSchema>;
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+  const dispatch = useAppDispatch();
+  const { loading, error, isAuthenticated } = useAppSelector(
+    (state) => state.auth
+  );
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,21 +58,18 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = async (values: FormValues) => {
-    setIsLoading(true);
-    setError(null);
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/contests");
+    }
+  }, [isAuthenticated, navigate]);
 
+  const onSubmit = async (values: FormValues) => {
     values;
     try {
-      // await register(values.name, values.email, values.password);
+      await dispatch(register(values)).unwrap();
       navigate("/contests");
-    } catch (err: any) {
-      setError(
-        err.response?.data?.error || "Failed to register. Please try again."
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    } catch (err: any) {}
   };
 
   return (
@@ -167,8 +167,8 @@ const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Creating account...

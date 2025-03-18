@@ -4,18 +4,23 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Code, BookmarkIcon, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "../ModeToggle";
+import { useAppDispatch, useAppSelector } from "@/hooks/userReduxStore";
+import { logout } from "@/store/slice/authSlice";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const dispatch = useAppDispatch();
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location.pathname]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const handleLogout = () => {
+    dispatch(logout());
+    // Add any additional logout cleanup here
   };
 
   const navLinks = [
@@ -87,23 +92,25 @@ const Navbar = () => {
             <div className="ml-4 flex items-center space-x-2">
               <ModeToggle />
 
-              {/* {user ? (
+              {isAuthenticated ? (
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-muted-foreground">Hi, {user.name}</span>
-                  <Button variant="outline" size="sm" onClick={logout}>
+                  <span className="text-sm text-muted-foreground">
+                    Hi, {user?.name}
+                  </span>
+                  <Button variant="outline" size="sm" onClick={handleLogout}>
                     Logout
                   </Button>
                 </div>
-              ) : ( */}
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button size="sm" asChild>
-                  <Link to="/register">Register</Link>
-                </Button>
-              </div>
-              {/* )} */}
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <Button variant="ghost" size="sm" asChild>
+                    <Link to="/login">Login</Link>
+                  </Button>
+                  <Button size="sm" asChild>
+                    <Link to="/register">Register</Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -113,7 +120,7 @@ const Navbar = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={toggleMenu}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="ml-2"
             >
               {isMenuOpen ? (
@@ -156,23 +163,27 @@ const Navbar = () => {
                 </motion.div>
               ))}
 
-              {/* {user ? (
-                <div className="pt-4 border-t border-border">
-                  <div className="px-4 py-2 text-sm text-muted-foreground">Logged in as {user.name}</div>
-                  <Button variant="outline" className="w-full mt-2" onClick={logout}>
-                    Logout
-                  </Button>
-                </div>
-              ) : ( */}
               <div className="pt-4 border-t border-border flex flex-col space-y-2">
-                <Button variant="outline" asChild>
-                  <Link to="/login">Login</Link>
-                </Button>
-                <Button asChild>
-                  <Link to="/register">Register</Link>
-                </Button>
+                {isAuthenticated ? (
+                  <>
+                    <div className="px-4 py-2 text-sm text-muted-foreground">
+                      Logged in as {user?.name}
+                    </div>
+                    <Button variant="outline" onClick={handleLogout}>
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button variant="outline" asChild>
+                      <Link to="/login">Login</Link>
+                    </Button>
+                    <Button asChild>
+                      <Link to="/register">Register</Link>
+                    </Button>
+                  </>
+                )}
               </div>
-              {/* )} */}
             </motion.div>
           )}
         </AnimatePresence>
