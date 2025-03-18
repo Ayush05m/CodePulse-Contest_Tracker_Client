@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, Filter, X, ArrowUpDown, ArrowDown } from "lucide-react";
+import { Search, Filter, X, ArrowUpDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
