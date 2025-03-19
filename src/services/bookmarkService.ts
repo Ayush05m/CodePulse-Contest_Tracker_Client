@@ -1,5 +1,7 @@
 import axios from "axios";
 import type { Bookmark } from "@/types/bookmark";
+// import { useAppSelector } from "@/hooks/userReduxStore";
+// import { User } from "@/store/slice/authSlice";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
 
@@ -34,12 +36,15 @@ export const getBookmarks = async (): Promise<Bookmark[]> => {
 export const addBookmark = async (
   contestId: string,
   notes?: string
+  // user: User,
 ): Promise<Bookmark> => {
+  // const { user } = useAppSelector((state) => state.auth);
   try {
     const token = localStorage.getItem("token");
     const response = await axios.post(
       `${API_URL}/bookmarks`,
       { contest: contestId, notes },
+      // { contest: contestId, notes, user },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -75,10 +80,12 @@ export const updateBookmark = async (
 
 export const removeBookmark = async (Id: string): Promise<void> => {
   try {
-    const bookmarks = JSON.parse(localStorage.getItem("bookmarks") || "[]") as string[];
+    const bookmarks = JSON.parse(
+      localStorage.getItem("bookmarks") || "[]"
+    ) as string[];
     const updatedBookmarks = bookmarks.filter((e) => e !== Id); // Create a new array without the Id
     localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
-    console.log(JSON.parse(localStorage.getItem("bookmarks") || "[]"))
+    console.log(JSON.parse(localStorage.getItem("bookmarks") || "[]"));
     // const token = localStorage.getItem("token");
     // await axios.delete(`${API_URL}/bookmarks/${bookmarkId}`, {
     //   headers: {

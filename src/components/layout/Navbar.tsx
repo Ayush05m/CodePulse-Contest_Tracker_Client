@@ -94,9 +94,9 @@ const Navbar = () => {
 
               {isAuthenticated ? (
                 <div className="flex items-center space-x-2">
-                  <span className="text-sm text-muted-foreground">
+                  {/* <span className="text-sm text-muted-foreground">
                     Hi, {user?.name}
-                  </span>
+                  </span> */}
                   <Button variant="outline" size="sm" onClick={handleLogout}>
                     Logout
                   </Button>

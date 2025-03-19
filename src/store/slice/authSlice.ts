@@ -7,7 +7,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "sonner";
 
-type User = {
+export type User = {
   id: string;
   name: string;
   email: string;
@@ -39,12 +39,7 @@ const getInitialState = (): AuthState => {
     if (!token) return defaultState;
 
     const decoded = jwtDecode<User & { exp: number }>(token);
-    if (
-      decoded.exp * 1000 < Date.now() ||
-      !decoded.id ||
-      !decoded.name ||
-      !decoded.email
-    ) {
+    if (decoded.exp * 1000 < Date.now() || !decoded.id) {
       localStorage.removeItem("token");
       return defaultState;
     }
@@ -100,7 +95,7 @@ export const login = createAsyncThunk(
       localStorage.setItem("token", token);
       return {
         token,
-        user: { id: decoded.id, name: decoded.name, email: decoded.email },
+        user: { id: decoded.id, name: data.data.name, email: data.data.email },
       };
     } catch (error) {
       toast.error("Login failed. Please try again.");
@@ -153,7 +148,7 @@ export const register = createAsyncThunk(
       localStorage.setItem("token", token);
       return {
         token,
-        user: { id: decoded.id, name: decoded.name, email: decoded.email },
+        user: { id: decoded.id, name: data.data.name, email: data.data.email },
       };
     } catch (error) {
       return rejectWithValue("Registration failed. Please try again.");
@@ -222,6 +217,7 @@ const authSlice = createSlice({
         (state, action: PayloadAction<{ token: string; user: User }>) => {
           state.loading = false;
           state.token = action.payload.token;
+          console.log(action.payload.user);
           state.user = action.payload.user;
           state.isAuthenticated = true;
         }

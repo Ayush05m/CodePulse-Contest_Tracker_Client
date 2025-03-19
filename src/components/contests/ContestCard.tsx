@@ -24,7 +24,10 @@ import { getSolutionsLinkByContestId } from "@/services/solutionService";
 import type { Solution } from "@/types/solution";
 import { toast } from "sonner";
 import { useAppSelector, useAppDispatch } from "@/hooks/userReduxStore";
-import { addBookmark, removeBookmark } from "@/store/slice/bookmarksSlice";
+import {
+  addBookmarkThunk,
+  removeBookmarkThunk,
+} from "@/store/slice/bookmarksSlice";
 
 interface ContestCardProps {
   contest: Contest;
@@ -83,12 +86,12 @@ const ContestCard = ({ contest }: ContestCardProps) => {
     setIsLoading(true);
     try {
       if (isBookmarked) {
-        dispatch(removeBookmark(contest.contestId));
+        dispatch(removeBookmarkThunk(contest.contestId));
         toast("Bookmark removed", {
           description: "Contest removed from your bookmarks.",
         });
       } else {
-        dispatch(addBookmark({ contest }));
+        dispatch(addBookmarkThunk({ contest }));
         toast("Bookmark added", {
           description: "Contest added to your bookmarks.",
         });

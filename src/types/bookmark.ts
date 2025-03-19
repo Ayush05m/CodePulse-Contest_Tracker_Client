@@ -5,7 +5,7 @@ export interface Bookmark {
   user?: string
   contest: Contest
   notes?: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
 

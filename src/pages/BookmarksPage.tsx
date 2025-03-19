@@ -45,10 +45,12 @@ import {
 import CountdownTimer from "@/components/contests/CountdownTimer";
 import { useAppSelector, useAppDispatch } from "@/hooks/userReduxStore";
 import {
-  removeBookmark,
-  updateBookmarkNotes,
+  removeBookmarkThunk,
+  updateBookmarkNotesThunk,
 } from "@/store/slice/bookmarksSlice";
 import type { BookmarkItem } from "@/store/slice/bookmarksSlice";
+import { getSolutionsLinkByContestId } from "@/services/solutionService";
+import { Solution } from "@/types/solution";
 
 const BookmarksPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -61,6 +63,7 @@ const BookmarksPage = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   // const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  const [isHovered, setIsHovered] = useState(false);
 
   const dispatch = useAppDispatch();
   const bookmarks = useAppSelector((state) => state.bookmarks.items);
@@ -92,8 +95,8 @@ const BookmarksPage = () => {
     setIsUpdating(true);
     try {
       dispatch(
-        updateBookmarkNotes({
-          contestId: selectedBookmark.contest.contestId,
+        updateBookmarkNotesThunk({
+          id: selectedBookmark.contest.contestId,
           notes,
         })
       );
@@ -116,7 +119,7 @@ const BookmarksPage = () => {
 
     setIsDeleting(true);
     try {
-      dispatch(removeBookmark(selectedBookmark.contest.contestId));
+      dispatch(removeBookmarkThunk(selectedBookmark.contest.contestId));
 
       toast("Bookmark removed", {
         description: "The contest has been removed from your bookmarks.",
@@ -129,6 +132,22 @@ const BookmarksPage = () => {
     } finally {
       setIsDeleting(false);
     }
+  };
+
+  const getContestAndRedirect = async (id: string) => {
+    try {
+      const solution: Solution | null = await getSolutionsLinkByContestId(id);
+
+      if (solution?.youtubeLinks?.length) {
+        window.open(solution.youtubeLinks[0].url); // Redirects to YouTube video
+      } else {
+        toast.error("No solution link available.");
+      }
+    } catch (error) {
+      console.error("Error fetching solution:", error);
+      toast.error("Failed to fetch solution. Please try again later.");
+    }
+    // console.log(url)
   };
 
   const getPlatformColor = (platform: string) => {
@@ -227,6 +246,8 @@ const BookmarksPage = () => {
                 transition={{ duration: 0.3 }}
                 layout
                 className=""
+                onHoverStart={() => setIsHovered(true)}
+                onHoverEnd={() => setIsHovered(false)}
               >
                 <Card className="h-full flex flex-col w-full max-w-[475px]">
                   <CardHeader className="pb-2">
@@ -318,7 +339,7 @@ const BookmarksPage = () => {
                     )}
                   </CardContent>
                   <CardFooter className="flex justify-between pt-2 border-t">
-                    <div className="flex gap-2">
+                    <div className="flex gap-1">
                       <Button
                         variant="ghost"
                         size="sm"
@@ -338,16 +359,43 @@ const BookmarksPage = () => {
                         Remove
                       </Button>
                     </div>
-                    <Button variant="ghost" size="sm" className="gap-1" asChild>
-                      <a
-                        href={bookmark.contest.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <div className="flex gap-1">
+                      {bookmark.contest.status == "past" && (
+                        <Button
+                          variant={isHovered ? "default" : "ghost"}
+                          size="sm"
+                          className="gap-1 transition-all duration-300"
+                          asChild
+                        >
+                          <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cursor-pointer"
+                            onClick={() =>
+                              getContestAndRedirect(bookmark.contest.contestId)
+                            }
+                          >
+                            Solution
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      <Button
+                        variant={isHovered ? "default" : "ghost"}
+                        size="sm"
+                        className="gap-1"
+                        asChild
                       >
-                        Visit
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    </Button>
+                        <a
+                          href={bookmark.contest.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Visit
+                          <ExternalLink className="h-4 w-4" />
+                        </a>
+                      </Button>
+                    </div>
                   </CardFooter>
                 </Card>
               </motion.div>

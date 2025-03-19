@@ -18,7 +18,7 @@ const Footer = () => {
           </motion.div>
           <div className="flex items-center space-x-4">
             <motion.a
-              href="https://github.com"
+              href="https://github.com/Ayush05m"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -40,7 +40,7 @@ const Footer = () => {
               <Twitter className="h-5 w-5" />
             </motion.a>
             <motion.a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/ayushmishra-profile"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
