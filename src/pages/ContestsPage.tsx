@@ -104,7 +104,7 @@ const ContestsPage = () => {
                 Try Again
               </Button>
             </div>
-          ) : data?.data.length === 0 ? (
+          ) : data?.data?.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-xl text-muted-foreground">
                 No contests found.
@@ -126,7 +126,7 @@ const ContestsPage = () => {
                   transition={{ duration: 0.3 }}
                   className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
                 >
-                  {data?.data.map((contest) => (
+                  {data?.data?.map((contest) => (
                     <ContestCard key={contest.contestId} contest={contest} />
                   ))}
                 </motion.div>

@@ -12,6 +12,8 @@ import SolutionsPage from "./pages/SolutionsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { toast } from "sonner";
+import { useEffect } from "react";
 // Create a client
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,6 +25,30 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  useEffect(() => {
+    setTimeout(() => {
+      toast.warning(
+        "This site is hosted on Vercel and Render and may take a few seconds to load initially.",
+        { duration: 9000 }
+      );
+    }, 100);
+    setTimeout(() => {
+      toast.info(
+        "Please be patient, and try refreshing the page if it doesn't load.",
+        {
+          duration: 9000,
+        }
+      );
+    }, 10000);
+    setTimeout(() => {
+      toast.success("Thanks for Understanding! 😊");
+    }, 18000);
+    setTimeout(() => {
+      toast.info(
+        "This site is still under development. Some features may not work as expected. Please report any issues you find."
+      );
+    }, 20000);
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider defaultTheme="light">

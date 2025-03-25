@@ -22,6 +22,7 @@ import { fetchContests } from "@/services/contestService";
 import ContestCard from "@/components/contests/ContestCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const HomePage = () => {
   // Fetch upcoming contests for the featured section
@@ -29,6 +30,7 @@ const HomePage = () => {
     queryKey: ["contests", "upcoming", "featured"],
     queryFn: () => fetchContests({ status: "upcoming", limit: 3 }),
   });
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -144,7 +146,7 @@ const HomePage = () => {
               <Skeleton key={i} className="h-[300px] w-full rounded-lg" />
             ))}
           </div>
-        ) : contestsData && contestsData.data.length > 0 ? (
+        ) : contestsData && contestsData?.data?.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-auto max-w-8xl">
             {contestsData.data.slice(0, 3).map((contest) => (
               <ContestCard key={contest.contestId} contest={contest} />

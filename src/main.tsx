@@ -8,6 +8,6 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ReduxProvider>
       <App />
-    </ReduxProvider>{" "}
+    </ReduxProvider>
   </StrictMode>
 );
