@@ -57,7 +57,7 @@ const SolutionsPage = () => {
         platform: filters.platform !== "all" ? filters.platform : undefined,
         sort: getSortValue(filters.sortBy),
         page,
-        limit: 10,
+        limit: 9,
       }),
     placeholderData: (previousData) => previousData,
   });

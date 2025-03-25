@@ -10,12 +10,13 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Solution } from "@/types/solution";
 import { getSolutionsLinkByContestId } from "@/services/solutionService";
-import { BookmarkItem } from "@/store/slice/bookmarksSlice";
+import { BookmarkItem, removeBookmarkThunk } from "@/store/slice/bookmarksSlice";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import CountdownTimer from "./contests/CountdownTimer";
 import { Button } from "./ui/button";
 import { ExternalLink, Pencil, Trash } from "lucide-react";
+import { useAppDispatch } from "@/hooks/userReduxStore";
 
 export const BookmarkCard = ({
   bookmark,
@@ -31,6 +32,7 @@ export const BookmarkCard = ({
   setIsEditDialogOpen: (value: boolean) => void;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useAppDispatch();
 
   const getContestAndRedirect = async (id: string) => {
     try {
@@ -96,6 +98,7 @@ export const BookmarkCard = ({
   const handleDeleteClick = (bookmark: BookmarkItem) => {
     setSelectedBookmark(bookmark);
     setIsDeleteDialogOpen(true);
+    dispatch(removeBookmarkThunk(bookmark.contest.contestId));
   };
 
   return (
