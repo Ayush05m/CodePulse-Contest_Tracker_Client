@@ -233,5 +233,5 @@ export const updateBookmarkNotesThunk = createAsyncThunk(
   }
 );
 
-export const { setBookmarks } = bookmarksSlice.actions;
+export const { setBookmarks, removeBookmark, addBookmark } = bookmarksSlice.actions;
 export default bookmarksSlice.reducer;

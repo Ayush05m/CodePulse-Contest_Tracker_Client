@@ -26,7 +26,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useAppSelector, useAppDispatch } from "@/hooks/userReduxStore";
 import {
-  removeBookmarkThunk,
+  removeBookmark,
+  // removeBookmarkThunk,
   updateBookmarkNotesThunk,
 } from "@/store/slice/bookmarksSlice";
 import type { BookmarkItem } from "@/store/slice/bookmarksSlice";
@@ -87,7 +88,7 @@ const BookmarksPage = () => {
 
     setIsDeleting(true);
     try {
-      dispatch(removeBookmarkThunk(selectedBookmark.contest.contestId));
+      dispatch(removeBookmark(selectedBookmark.contest.contestId));
 
       toast("Bookmark removed", {
         description: "The contest has been removed from your bookmarks.",

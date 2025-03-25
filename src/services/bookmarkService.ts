@@ -78,7 +78,7 @@ export const updateBookmark = async (
   }
 };
 
-export const removeBookmark = async (Id: string): Promise<void> => {
+export const removeBookmark = async (Id: string) => {
   try {
     const bookmarks = JSON.parse(
       localStorage.getItem("bookmarks") || "[]"
