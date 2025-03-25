@@ -22,7 +22,7 @@ import { fetchContests } from "@/services/contestService";
 import ContestCard from "@/components/contests/ContestCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect } from "react";
-import { toast } from "sonner";
+// import { toast } from "sonner";
 
 const HomePage = () => {
   // Fetch upcoming contests for the featured section
