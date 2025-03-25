@@ -27,10 +27,10 @@ export const getContestStatus = (
 };
 
 export interface BookmarkItem {
-  id: string;
+  id?: string;
   contest: Contest;
   notes?: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 interface BookmarksState {

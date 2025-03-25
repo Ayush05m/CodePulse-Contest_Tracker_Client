@@ -23,7 +23,8 @@ import type { Solution } from "@/types/solution";
 import { toast } from "sonner";
 import { useAppSelector, useAppDispatch } from "@/hooks/userReduxStore";
 import {
-  addBookmarkThunk,
+  addBookmark,
+  // addBookmarkThunk,
   removeBookmarkThunk,
 } from "@/store/slice/bookmarksSlice";
 
@@ -89,7 +90,7 @@ const ContestCard = ({ contest }: ContestCardProps) => {
           description: "Contest removed from your bookmarks.",
         });
       } else {
-        dispatch(addBookmarkThunk({ contest }));
+        dispatch(addBookmark({ contest }));
         toast("Bookmark added", {
           description: "Contest added to your bookmarks.",
         });

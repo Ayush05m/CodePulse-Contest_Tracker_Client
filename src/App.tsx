@@ -39,15 +39,16 @@ function App() {
           duration: 9000,
         }
       );
-    }, 10000);
+    }, 5000);
     setTimeout(() => {
       toast.success("Thanks for Understanding! 😊");
-    }, 18000);
+    }, 14000);
     setTimeout(() => {
       toast.info(
-        "This site is still under development. Some features may not work as expected. Please report any issues you find."
+        "This site is still under development. Some features may not work as expected. Please report any issues you find.",
+        { duration: 9000 }
       );
-    }, 20000);
+    }, 16000);
   }, []);
   return (
     <QueryClientProvider client={queryClient}>
